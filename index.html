@@ -111,6 +111,23 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; f
 .new-ch { display: flex; flex-direction: column; gap: 7px; }
 .ch-item { background: var(--bg); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; }
 .ch-pill { font-size: 10px; font-family: ui-monospace, monospace; background: var(--c-blue-bg); color: var(--c-blue-text); padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
+
+/* ── To-Do tab ─────────────────────────────────────────────────────── */
+.todo-col { display: flex; flex-direction: column; gap: 14px; }
+.todo-group { background: var(--bg); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; }
+.todo-group-head { padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5px solid var(--border-subtle); }
+.todo-group-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-2); }
+.todo-count-chip { font-size: 10px; padding: 1px 7px; border-radius: 8px; font-weight: 500; background: var(--bg-3); color: var(--text-3); }
+.todo-item { display: flex; align-items: flex-start; gap: 9px; padding: 7px 12px; border-bottom: 0.5px solid var(--border-subtle); }
+.todo-item:last-child { border-bottom: none; }
+.todo-check { width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+.todo-text { font-size: 12px; color: var(--text); flex: 1; line-height: 1.4; }
+.todo-age { font-size: 10px; color: var(--text-3); white-space: nowrap; }
+.p-badge { font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: 600; flex-shrink: 0; }
+.p1 { background: var(--c-red-bg); color: var(--c-red-text); }
+.p2 { background: var(--c-amber-bg); color: var(--c-amber-text); }
+.todo-overdue-age { display: inline-block; min-width: 50px; text-align: right; }
+.overdue-row-old { opacity: 0.7; }
 </style>
 </head>
 <body>
@@ -180,6 +197,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; f
   <button class="nav-btn" data-s="buzz">Buzz topics</button>
   <button class="nav-btn" data-s="releases">Releases</button>
   <button class="nav-btn" data-s="channels">New channels</button>
+  <button class="nav-btn" data-s="todo">☑ To-Do</button>
 </div>
 
 <div class="section visible" id="s-action">
@@ -393,6 +411,168 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; f
         <a class="sl-link" href="https://hootsuite.slack.com/archives/C070F768LN7" target="_blank" style="margin-top:5px;display:inline-flex">Open channel ↗</a>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="section" id="s-todo">
+  <div class="todo-col">
+
+    <!-- Today's work tasks -->
+    <div class="todo-group">
+      <div class="todo-group-head">
+        <span class="todo-group-title">Today — Thu 7 May</span>
+        <span class="todo-count-chip">1 open</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">EY Follow up on permission</span>
+        <span class="todo-age">Today</span>
+      </div>
+    </div>
+
+    <!-- Overdue work tasks -->
+    <div class="todo-group">
+      <div class="todo-group-head">
+        <span class="todo-group-title">Overdue work tasks</span>
+        <span class="todo-count-chip">18 items</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Prepare for team meeting - Claude</span>
+        <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Agata response on permissions and Inbox routing</span>
+        <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">White and Case metadata analysis for Amplify — Kelly ⭐</span>
+        <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">BAT – Gosia Response ⭐</span>
+        <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Legal and General inbox query ⭐</span>
+        <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">BAT API Email ⭐</span>
+        <span class="todo-age todo-overdue-age" style="color:var(--c-amber)">2d ago</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Harish Response – National Grid ⭐</span>
+        <span class="todo-age todo-overdue-age" style="color:var(--c-amber)">2d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Guardian Life – harmful comments listening query and alert ⭐</span>
+        <span class="todo-age todo-overdue-age">7d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Ad Council – updates from call ⭐</span>
+        <span class="todo-age todo-overdue-age">7d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Genesis monthly report schedule ⭐</span>
+        <span class="todo-age todo-overdue-age">8d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Red Interactive – developer account ⭐</span>
+        <span class="todo-age todo-overdue-age">8d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Red Interactive – AA connections ⭐</span>
+        <span class="todo-age todo-overdue-age">8d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">British Council Talkwalker requirements ⭐</span>
+        <span class="todo-age todo-overdue-age">9d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Resourcing in Kantana</span>
+        <span class="todo-age todo-overdue-age">15d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Ad council Prostate Cancer query build ⭐</span>
+        <span class="todo-age todo-overdue-age">15d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">Onsite expenses</span>
+        <span class="todo-age todo-overdue-age">16d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">BAT Proactive Services ⭐</span>
+        <span class="todo-age todo-overdue-age">22d ago</span>
+      </div>
+      <div class="todo-item overdue-row-old">
+        <div class="todo-check"></div>
+        <span class="todo-text">EY Analytics API ⭐</span>
+        <span class="todo-age todo-overdue-age">22d ago</span>
+      </div>
+    </div>
+
+    <!-- Personal to-dos from Obsidian -->
+    <div class="todo-group">
+      <div class="todo-group-head">
+        <span class="todo-group-title">Personal (Obsidian)</span>
+        <span class="todo-count-chip">8 items</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Pay Mark for attic</span>
+        <span class="p-badge p1">P1</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">BUPA / AXA</span>
+        <span class="p-badge p1">P1</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Dentist</span>
+        <span class="p-badge p2">P2</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Vision Express</span>
+        <span class="p-badge p2">P2</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Renew passport</span>
+        <span class="p-badge p2">P2</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">NET training refunds on three bookings</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Obsidian sync with Claude</span>
+      </div>
+      <div class="todo-item">
+        <div class="todo-check"></div>
+        <span class="todo-text">Knee – doctor</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
