@@ -417,29 +417,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; f
     <div class="todo-group">
       <div class="todo-group-head">
         <span class="todo-group-title">⭐ Starred — open ≤ 5 days</span>
-        <span class="todo-count-chip">5 items</span>
+        <span class="todo-count-chip">5 items</span><button class="todo-clear" onclick="clearGroup(this,event)">Clear done</button>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t1">
         <div class="todo-check"></div>
         <span class="todo-text">BAT API Email</span>
         <span class="todo-age todo-overdue-age" style="color:var(--c-amber)">2d ago</span>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t2">
         <div class="todo-check"></div>
         <span class="todo-text">Harish Response — National Grid</span>
         <span class="todo-age todo-overdue-age" style="color:var(--c-amber)">2d ago</span>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t3">
         <div class="todo-check"></div>
         <span class="todo-text">White and Case metadata analysis for Amplify — Kelly</span>
         <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t4">
         <div class="todo-check"></div>
         <span class="todo-text">BAT — Gosia Response</span>
         <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t5">
         <div class="todo-check"></div>
         <span class="todo-text">Legal and General inbox query</span>
         <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
@@ -450,19 +450,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; f
     <div class="todo-group">
       <div class="todo-group-head">
         <span class="todo-group-title">Unstarred — open ≤ 5 days</span>
-        <span class="todo-count-chip">3 items</span>
+        <span class="todo-count-chip">3 items</span><button class="todo-clear" onclick="clearGroup(this,event)">Clear done</button>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t6">
         <div class="todo-check"></div>
         <span class="todo-text">Prepare for team meeting — Claude</span>
         <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t7">
         <div class="todo-check"></div>
         <span class="todo-text">Agata response on permissions and Inbox routing</span>
         <span class="todo-age todo-overdue-age" style="color:var(--c-red)">1d ago</span>
       </div>
-      <div class="todo-item">
+      <div class="todo-item" data-tid="t8">
         <div class="todo-check"></div>
         <span class="todo-text">EY Follow up on permission</span>
         <span class="todo-age todo-overdue-age">Today</span>
@@ -473,49 +473,49 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; f
     <div class="todo-group">
       <div class="todo-group-head">
         <span class="todo-group-title">⭐ Starred — open &gt; 5 days</span>
-        <span class="todo-count-chip">9 items</span>
+        <span class="todo-count-chip">9 items</span><button class="todo-clear" onclick="clearGroup(this,event)">Clear done</button>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t9">
         <div class="todo-check"></div>
         <span class="todo-text">BAT Proactive Services</span>
         <span class="todo-age todo-overdue-age">22d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t10">
         <div class="todo-check"></div>
         <span class="todo-text">EY Analytics API</span>
         <span class="todo-age todo-overdue-age">22d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t11">
         <div class="todo-check"></div>
         <span class="todo-text">Ad Council — Prostate Cancer query build</span>
         <span class="todo-age todo-overdue-age">15d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t12">
         <div class="todo-check"></div>
         <span class="todo-text">British Council Talkwalker requirements</span>
         <span class="todo-age todo-overdue-age">9d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t13">
         <div class="todo-check"></div>
         <span class="todo-text">Genesis monthly report schedule</span>
         <span class="todo-age todo-overdue-age">8d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t14">
         <div class="todo-check"></div>
         <span class="todo-text">Red Interactive — developer account</span>
         <span class="todo-age todo-overdue-age">8d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t15">
         <div class="todo-check"></div>
         <span class="todo-text">Red Interactive — AA connections</span>
         <span class="todo-age todo-overdue-age">8d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t16">
         <div class="todo-check"></div>
         <span class="todo-text">Ad Council — updates from call</span>
         <span class="todo-age todo-overdue-age">7d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t17">
         <div class="todo-check"></div>
         <span class="todo-text">Guardian Life — harmful comments listening query and alert</span>
         <span class="todo-age todo-overdue-age">7d ago</span>
@@ -526,14 +526,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; f
     <div class="todo-group">
       <div class="todo-group-head">
         <span class="todo-group-title">Unstarred — open &gt; 5 days</span>
-        <span class="todo-count-chip">2 items</span>
+        <span class="todo-count-chip">2 items</span><button class="todo-clear" onclick="clearGroup(this,event)">Clear done</button>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t18">
         <div class="todo-check"></div>
         <span class="todo-text">Onsite expenses</span>
         <span class="todo-age todo-overdue-age">16d ago</span>
       </div>
-      <div class="todo-item overdue-row-old">
+      <div class="todo-item overdue-row-old" data-tid="t19">
         <div class="todo-check"></div>
         <span class="todo-text">Resourcing in Kantana</span>
         <span class="todo-age todo-overdue-age">15d ago</span>
