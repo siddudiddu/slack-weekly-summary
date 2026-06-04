@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Slack Summary</title>
+<title>Daily Slack Summary — 2026-06-04</title>
 <style>
   :root {
     --c-red: #D85A30; --c-red-bg: #FAECE7; --c-red-text: #712B13;
@@ -12,581 +12,588 @@
     --c-blue: #185FA5; --c-blue-bg: #E6F1FB; --c-blue-text: #0C447C;
     --c-purple: #534AB7; --c-purple-bg: #EEEDFE; --c-purple-text: #3C3489;
     --c-teal: #0F6E56; --c-teal-bg: #E1F5EE; --c-teal-text: #085041;
-    --bg: #f8f7f5; --card-bg: #ffffff; --border: #e5e3df;
-    --text: #1a1916; --text-muted: #6b6760;
-    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --mono: 'SF Mono', 'Fira Code', monospace;
+    --c-bg: #f8f7f5;
+    --c-card: #ffffff;
+    --c-border: #e8e6e1;
+    --c-text: #1a1a1a;
+    --c-muted: #6b6b6b;
+    --c-subtle: #f2f0ec;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 13px; }
-  .topbar { background: #fff; border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--c-bg); color: var(--c-text); font-size: 13px; }
+
+  /* ── TOPBAR ─────────────────────────────────────────────── */
+  .topbar { background: #fff; border-bottom: 1px solid var(--c-border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .topbar h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
-  .topbar-meta { text-align: right; font-size: 11px; color: var(--text-muted); line-height: 1.5; }
-  .main { max-width: 960px; margin: 0 auto; padding: 20px 16px 40px; }
-  .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
-  .kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; position: relative; overflow: hidden; }
-  .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-  .kpi-card.red::before { background: var(--c-red); }
-  .kpi-card.amber::before { background: var(--c-amber); }
-  .kpi-card.blue::before { background: var(--c-blue); }
-  .kpi-card.green::before { background: var(--c-green); }
-  .kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
-  .kpi-num { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .topbar-meta { text-align: right; }
+  .topbar-meta .date-range { font-size: 12px; font-weight: 500; color: var(--c-muted); }
+  .topbar-meta .refreshed { font-size: 11px; color: #aaa; margin-top: 2px; }
+
+  /* ── WRAPPER ─────────────────────────────────────────────── */
+  .wrapper { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* ── KPI CARDS ─────────────────────────────────────────────── */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .kpi-card { background: var(--c-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 14px 16px; border-top-width: 3px; }
+  .kpi-card.red { border-top-color: var(--c-red); }
+  .kpi-card.amber { border-top-color: var(--c-amber); }
+  .kpi-card.blue { border-top-color: var(--c-blue); }
+  .kpi-card.green { border-top-color: var(--c-green); }
+  .kpi-card .kpi-label { font-size: 11px; color: var(--c-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+  .kpi-card .kpi-num { font-size: 28px; font-weight: 700; margin: 4px 0 6px; line-height: 1; }
   .kpi-card.red .kpi-num { color: var(--c-red); }
   .kpi-card.amber .kpi-num { color: var(--c-amber); }
   .kpi-card.blue .kpi-num { color: var(--c-blue); }
   .kpi-card.green .kpi-num { color: var(--c-green); }
-  .kpi-sub { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
-  .kpi-bar { display: flex; gap: 2px; margin-top: 8px; height: 4px; border-radius: 2px; overflow: hidden; }
-  .kpi-bar-seg { height: 100%; border-radius: 2px; }
-  .tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; }
-  .tab-btn { background: none; border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
-  .tab-btn:hover { border-color: #aaa; color: var(--text); }
-  .tab-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
-  .tab-pane { display: none; }
-  .tab-pane.active { display: block; }
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px,1fr)); gap: 8px; }
-  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
-  .card-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+  .kpi-card .kpi-sub { font-size: 11px; color: var(--c-muted); line-height: 1.5; }
+  .fill-bar { height: 4px; background: var(--c-subtle); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+  .fill-bar-inner { height: 100%; border-radius: 2px; }
+  .fill-bar-inner.red { background: var(--c-red); }
+  .fill-bar-inner.amber { background: var(--c-amber); }
+  .fill-bar-inner.blue { background: var(--c-blue); }
+  .fill-bar-inner.green { background: var(--c-green); }
+
+  /* ── TABS ─────────────────────────────────────────────── */
+  .tab-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab-btn { padding: 7px 14px; border-radius: 20px; border: 1px solid var(--c-border); background: var(--c-card); font-size: 12px; font-weight: 500; cursor: pointer; color: var(--c-muted); transition: all 0.15s; white-space: nowrap; }
+  .tab-btn:hover { background: var(--c-subtle); color: var(--c-text); }
+  .tab-btn.active { background: var(--c-text); color: #fff; border-color: var(--c-text); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── CARD GRID ─────────────────────────────────────────────── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 8px; }
+  .card { background: var(--c-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 10px 12px; }
+  .card-header { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .channel-name { font-family: var(--mono); font-size: 10px; color: var(--text-muted); flex: 1; }
-  .badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
+  .dot.red { background: var(--c-red); }
+  .dot.amber { background: var(--c-amber); }
+  .dot.blue { background: var(--c-blue); }
+  .dot.green { background: var(--c-green); }
+  .dot.purple { background: var(--c-purple); }
+  .dot.teal { background: var(--c-teal); }
+  .dot.grey { background: #aaa; }
+  .channel-tag { font-family: 'Courier New', monospace; font-size: 10px; color: var(--c-muted); background: var(--c-subtle); padding: 2px 6px; border-radius: 4px; }
+  .card-title { font-size: 12px; font-weight: 600; margin-bottom: 4px; line-height: 1.4; }
+  .card-desc { font-size: 11px; color: var(--c-muted); line-height: 1.55; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
   .badge.urgent { background: var(--c-red-bg); color: var(--c-red-text); }
   .badge.pending { background: var(--c-amber-bg); color: var(--c-amber-text); }
   .badge.watch { background: var(--c-amber-bg); color: var(--c-amber-text); }
   .badge.fyi { background: var(--c-blue-bg); color: var(--c-blue-text); }
   .badge.done { background: var(--c-green-bg); color: var(--c-green-text); }
   .badge.escalate { background: var(--c-purple-bg); color: var(--c-purple-text); }
-  .card-title { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
-  .card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
-  .card-link { display: inline-block; margin-top: 6px; font-size: 10px; color: var(--c-blue); text-decoration: none; }
-  .card-link:hover { text-decoration: underline; }
-  .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin: 20px 0 8px; }
+  .slack-link { font-size: 11px; color: var(--c-blue); text-decoration: none; }
+  .slack-link:hover { text-decoration: underline; }
+
+  /* ── SECTION HEADER ─────────────────────────────────────────────── */
+  .section-header { margin-bottom: 10px; }
+  .section-header h2 { font-size: 13px; font-weight: 600; color: var(--c-text); }
+  .section-header p { font-size: 11px; color: var(--c-muted); margin-top: 2px; }
+
+  /* ── BUZZ TOPICS ─────────────────────────────────────────────── */
   .buzz-list { display: flex; flex-direction: column; gap: 8px; }
-  .buzz-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
-  .buzz-topic { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-  .buzz-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
-  .release-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
-  .release-header { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-  .release-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 12px; background: var(--c-blue-bg); color: var(--c-blue-text); }
-  .release-date { font-size: 10px; color: var(--text-muted); }
-  .release-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .release-desc { font-size: 11px; color: var(--text-muted); line-height: 1.55; }
-  .release-desc a { color: var(--c-blue); }
-  .todo-group { margin-bottom: 20px; }
-  .todo-group-header { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px 8px 0 0; border-bottom: none; }
-  .todo-group-title { font-size: 12px; font-weight: 600; flex: 1; }
-  .todo-count { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 20px; background: var(--c-blue-bg); color: var(--c-blue-text); }
-  .todo-clear-btn { font-size: 10px; color: var(--text-muted); background: none; border: 1px solid var(--border); border-radius: 12px; padding: 2px 8px; cursor: pointer; }
-  .todo-clear-btn:hover { color: var(--c-red); border-color: var(--c-red); }
-  .todo-items { background: var(--card-bg); border: 1px solid var(--border); border-radius: 0 0 8px 8px; }
-  .todo-item { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 12px; border-top: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
-  .todo-item:hover { background: var(--bg); }
-  .todo-item.done .todo-text { text-decoration: line-through; color: var(--text-muted); }
-  .todo-text { font-size: 12px; flex: 1; padding-right: 12px; line-height: 1.4; }
-  .todo-age { font-size: 10px; white-space: nowrap; padding: 1px 6px; border-radius: 10px; }
-  .age-overdue { background: var(--c-red-bg); color: var(--c-red-text); font-weight: 600; }
-  .age-old { background: #f0eeec; color: var(--text-muted); }
-  .age-fresh { background: var(--c-green-bg); color: var(--c-green-text); }
-  .empty-state { text-align: center; padding: 32px; color: var(--text-muted); font-size: 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
-  .warn-banner { background: var(--c-amber-bg); border: 1px solid var(--c-amber); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 11px; color: var(--c-amber-text); }
+  .buzz-item { background: var(--c-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; }
+  .buzz-rank { font-size: 18px; font-weight: 800; color: var(--c-border); line-height: 1; min-width: 24px; }
+  .buzz-body { flex: 1; }
+  .buzz-title { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+  .buzz-desc { font-size: 11px; color: var(--c-muted); line-height: 1.5; }
+  .buzz-channels { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+
+  /* ── SAVED THREADS ─────────────────────────────────────────────── */
+  .saved-list { display: flex; flex-direction: column; gap: 8px; }
+  .saved-item { background: var(--c-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .saved-item-body { flex: 1; }
+  .saved-item-title { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+  .saved-item-meta { font-size: 11px; color: var(--c-muted); }
+
+  /* ── CHANNELS TAB ─────────────────────────────────────────────── */
+  .channel-card { background: var(--c-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+  .channel-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .channel-card-header .channel-tag { font-size: 11px; }
+  .channel-card ul { padding-left: 14px; }
+  .channel-card ul li { font-size: 11px; color: var(--c-muted); margin-bottom: 4px; line-height: 1.5; }
+  .channel-card ul li strong { color: var(--c-text); }
+
+  /* ── TODO ─────────────────────────────────────────────── */
+  .todo-notice { background: var(--c-amber-bg); border: 1px solid #f0d5a0; border-radius: 8px; padding: 14px 16px; color: var(--c-amber-text); font-size: 12px; line-height: 1.6; }
+
+  /* ── RELEASES ─────────────────────────────────────────────── */
+  .release-notice { background: var(--c-subtle); border: 1px solid var(--c-border); border-radius: 8px; padding: 14px 16px; color: var(--c-muted); font-size: 12px; line-height: 1.6; margin-bottom: 10px; }
+  .release-archive { background: var(--c-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+  .release-archive h3 { font-size: 12px; font-weight: 600; color: var(--c-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.4px; font-style: italic; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--c-muted); font-size: 12px; }
+  .empty-state .icon { font-size: 28px; margin-bottom: 8px; }
 </style>
 </head>
 <body>
+
+<!-- TOPBAR -->
 <div class="topbar">
-  <h1>Daily Slack Summary</h1>
+  <h1>Daily Slack summary</h1>
   <div class="topbar-meta">
-    <div id="date-range"></div>
-    <div id="refresh-time"></div>
+    <div class="date-range" id="date-range">—</div>
+    <div class="refreshed" id="refreshed-time">—</div>
   </div>
 </div>
-<div class="main">
+
+<div class="wrapper">
+
+  <!-- KPI CARDS -->
   <div class="kpi-row">
     <div class="kpi-card red">
       <div class="kpi-label">Needs Action</div>
       <div class="kpi-num">3</div>
       <div class="kpi-sub">2 urgent · 1 pending</div>
-      <div class="kpi-bar">
-        <div class="kpi-bar-seg" style="width:67%;background:var(--c-red)"></div>
-        <div class="kpi-bar-seg" style="width:33%;background:var(--c-amber)"></div>
-      </div>
+      <div class="fill-bar"><div class="fill-bar-inner red" style="width:100%"></div></div>
     </div>
     <div class="kpi-card amber">
       <div class="kpi-label">Monitoring</div>
-      <div class="kpi-num">5</div>
-      <div class="kpi-sub">Active threads to watch</div>
-      <div class="kpi-bar"><div class="kpi-bar-seg" style="width:100%;background:var(--c-amber)"></div></div>
+      <div class="kpi-num">3</div>
+      <div class="kpi-sub">2 EY tickets · 1 event</div>
+      <div class="fill-bar"><div class="fill-bar-inner amber" style="width:75%"></div></div>
     </div>
     <div class="kpi-card blue">
       <div class="kpi-label">Highlights</div>
-      <div class="kpi-num">6</div>
-      <div class="kpi-sub">Active channels this week</div>
-      <div class="kpi-bar"><div class="kpi-bar-seg" style="width:100%;background:var(--c-blue)"></div></div>
+      <div class="kpi-num">4</div>
+      <div class="kpi-sub">2 account wins · 2 updates</div>
+      <div class="fill-bar"><div class="fill-bar-inner blue" style="width:60%"></div></div>
     </div>
     <div class="kpi-card green">
       <div class="kpi-label">New Releases</div>
-      <div class="kpi-num">3</div>
-      <div class="kpi-sub">Product announcements</div>
-      <div class="kpi-bar"><div class="kpi-bar-seg" style="width:100%;background:var(--c-green)"></div></div>
+      <div class="kpi-num">0</div>
+      <div class="kpi-sub">Channel inactive since Jun 2025</div>
+      <div class="fill-bar"><div class="fill-bar-inner green" style="width:0%"></div></div>
     </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('needs-action',this)">Needs Action</button>
-    <button class="tab-btn" onclick="switchTab('monitor',this)">Monitor</button>
-    <button class="tab-btn" onclick="switchTab('highlights',this)">Highlights</button>
-    <button class="tab-btn" onclick="switchTab('saved',this)">Saved Threads</button>
-    <button class="tab-btn" onclick="switchTab('buzz',this)">Buzz Topics</button>
-    <button class="tab-btn" onclick="switchTab('releases',this)">Releases</button>
-    <button class="tab-btn" onclick="switchTab('new-channels',this)">New Channels</button>
-    <button class="tab-btn" onclick="switchTab('todo',this)">&#9745; To-Do</button>
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('needs-action')">🔴 Needs Action</button>
+    <button class="tab-btn" onclick="showTab('monitor')">🟡 Monitor</button>
+    <button class="tab-btn" onclick="showTab('highlights')">🔵 Highlights</button>
+    <button class="tab-btn" onclick="showTab('saved')">🔖 Saved Threads</button>
+    <button class="tab-btn" onclick="showTab('buzz')">🔥 Buzz Topics</button>
+    <button class="tab-btn" onclick="showTab('releases')">🚀 Releases</button>
+    <button class="tab-btn" onclick="showTab('new-channels')">📢 New Channels</button>
+    <button class="tab-btn" onclick="showTab('todo')">☑ To-Do</button>
   </div>
 
-  <!-- NEEDS ACTION -->
-  <div id="tab-needs-action" class="tab-pane active">
+  <!-- ── NEEDS ACTION ── -->
+  <div class="tab-content active" id="tab-needs-action">
+    <div class="section-header">
+      <h2>Needs Your Attention</h2>
+      <p>3 items across 3 channels requiring a response or action from you</p>
+    </div>
     <div class="card-grid">
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-red)"></div>
-          <span class="channel-name">#uipath-launch-26</span>
-          <span class="badge urgent">Urgent</span>
+          <div class="dot red"></div>
+          <span class="channel-tag">#ey-account-team</span>
         </div>
-        <div class="card-title">UiPath sync invite — tomorrow 2:30pm</div>
-        <div class="card-desc">Molly Radabaugh asks if you can join the UiPath sync on <strong>June 4 at 2:30pm</strong> to discuss initial dashboard deliverables plus a new Amplify dashboard ask from Raluca. She also needs you to confirm how many expert TAM hours remain — she has 4.25 accounted for.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C0A3K55FEJC/p1780485283941819" target="_blank">Slack &#8599;</a>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-red)"></div>
-          <span class="channel-name">#superstruct-entertainment-launch-2026</span>
+        <div class="card-title">Should we ping Alina about the stalled escalation tickets?</div>
+        <div class="card-desc">Rebecca Giorgetti asked at 10:01 AM today: tickets 00328303 (TW LinkedIn capture) and 00328301 (HS Planner bug) have not moved since Peter escalated them last week. She's asking whether to escalate further to Alina or another contact. <strong>No response from you yet.</strong></div>
+        <div class="card-footer">
           <span class="badge urgent">Urgent</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C09LQ1X4EJG/p1780563719922999?thread_ts=1780002098.066499&cid=C09LQ1X4EJG" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Reply to Xavier — committed today</div>
-        <div class="card-desc">You committed to replying to <strong>Xavier today</strong> regarding the SFTP/Analytics API confusion. Ollie is asking for any additional context first. Your internal read: the confusion is SFTP AA data export being repositioned as Analytics API.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C0ABHL20ZEW/p1780484798731759" target="_blank">Slack &#8599;</a>
       </div>
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-amber)"></div>
-          <span class="channel-name">#allen-overy-</span>
+          <div class="dot red"></div>
+          <span class="channel-tag">Group DM (Hill Lui, Carol Peterson)</span>
+        </div>
+        <div class="card-title">Video clips of permissions management for PDP review</div>
+        <div class="card-desc">Hill Lui is reviewing PDP-1209 (bulk permissions feature) since Maral left. Asked if you or Carol have video clips showing clients managing permissions tediously without the bulk capability — and followed up asking which of 3 permission groups they were struggling with. <strong>No reply from you.</strong></div>
+        <div class="card-footer">
           <span class="badge pending">Pending</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C0B83K82JAW/p1780513647046209" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Log May hours to AOS spreadsheet</div>
-        <div class="card-desc">Myriam's May 29 project summary calls out: add your hours for May (and April if applicable) to the hours spreadsheet. Also: AOS tags document has been shared — Myriam expects you'll need clarification.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C070F768LN7/p1780073985498629" target="_blank">Slack &#8599;</a>
       </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="dot amber"></div>
+          <span class="channel-tag">DM · Alex Wedderburn</span>
+        </div>
+        <div class="card-title">Email Gordon + record two Advocacy permission flows</div>
+        <div class="card-desc">Agreed this morning — shortlisted to final 2 on this RFP. Alex wants you to send an email to Gordon (or start a fresh one) explaining two options: (1) Content Library / templates-only approach, (2) adding advocacy users with approval workflows. You committed to a recording of each flow. Meeting with Louise (Gordon's boss) at 12 today.</div>
+        <div class="card-footer">
+          <span class="badge urgent">Urgent</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/D03KDPH5938/p1780563757413709" target="_blank">Slack ↗</a>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- MONITOR -->
-  <div id="tab-monitor" class="tab-pane">
+  <!-- ── MONITOR ── -->
+  <div class="tab-content" id="tab-monitor">
+    <div class="section-header">
+      <h2>Monitor</h2>
+      <p>Items you're across but should keep watching</p>
+    </div>
     <div class="card-grid">
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-amber)"></div>
-          <span class="channel-name">#answers-analytics</span>
+          <div class="dot amber"></div>
+          <span class="channel-tag">#ey-account-team</span>
+        </div>
+        <div class="card-title">Stalled support tickets — TW LinkedIn capture + HS Planner bug</div>
+        <div class="card-desc">Two tickets escalated last week by Peter: <strong>00328303</strong> (TW not collecting owned LinkedIn mentions) and <strong>00328301</strong> (HS Planner filtering bug). TW Support confirmed "investigating" but no updates since. LinkedIn API confirmed to block some mentions for compliance — but team needs resolution and a proper timeline communicated to EY.</div>
+        <div class="card-footer">
+          <span class="badge escalate">Escalate?</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C09LQ1X4EJG/p1780002098066499" target="_blank">Slack ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="dot amber"></div>
+          <span class="channel-tag">#ey-account-team</span>
+        </div>
+        <div class="card-title">Cannes Lions 2026 monitoring — June 22–26</div>
+        <div class="card-desc">Stuart flagged last month that EY has two major events coming up. World Entrepreneur of the Year (Monaco, May 24–29) has passed — the next is <strong>Cannes Lions, June 22–26</strong>. They previously requested increased refresh rates during key events. Prep needed: daily manual backfills vs. requesting priority refresh.</div>
+        <div class="card-footer">
           <span class="badge watch">Watch</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C09LQ1X4EJG/p1779201821124089" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Video views metric — does it include carousel?</div>
-        <div class="card-desc">Olivia Goldsmith (May 29) asked you and Livia whether the video views metric includes carousel posts, or if there is simply no filter. No reply from you visible yet — may need a response.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C04LGRR22KU/p1780072237977369" target="_blank">Slack &#8599;</a>
       </div>
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-amber)"></div>
-          <span class="channel-name">#national-grid-launch-2026</span>
+          <div class="dot amber"></div>
+          <span class="channel-tag">#superstruct-entertainment-launch-2026</span>
+        </div>
+        <div class="card-title">Graduation call TBD — pending items from Siddu</div>
+        <div class="card-desc">Myriam has sent 2 placeholders for the graduation/handover call. Outstanding item from you: <strong>share UTM parameters, social link tracking standards, and data pulled from GA4 metrics</strong> for the Superstruct team. Deck to be shared by Myriam soon.</div>
+        <div class="card-footer">
           <span class="badge watch">Watch</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C0ABHL20ZEW/p1780054737768029" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Inbox 2.0 — real-time alert workaround?</div>
-        <div class="card-desc">Myriam (May 21) asked if there is a workaround for triggering an alert when a specific person comments or DMs. Tagged you and Robert Mumby. No response from you visible — check if Robert replied.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C0A9TMRLL1G/p1779356244123509" target="_blank">Slack &#8599;</a>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-amber)"></div>
-          <span class="channel-name">#tam-ps-team</span>
-          <span class="badge watch">Watch</span>
-        </div>
-        <div class="card-title">Variable comp results — update pending from Lisa</div>
-        <div class="card-desc">Lisa Mahato told the team (May 29) she will share variable comp attainment once she has the details. No update visible yet. Monitor for when this comes through.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C05FPRMUF8S/p1780070506354029" target="_blank">Slack &#8599;</a>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#tam-ps-team</span>
-          <span class="badge fyi">FYI</span>
-        </div>
-        <div class="card-title">AOS Shearman — TW vs HS Analytics comparison doc</div>
-        <div class="card-desc">Lizzie shared an AOS Shearman request doc (TW vs HS side-by-side metrics matrix) with you. Based on the Kenvue template Matt Anderson built. Team is now enhancing it — useful reference for your analytics conversations.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C05FPRMUF8S/p1780070109218359" target="_blank">Slack &#8599;</a>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#bat-project-team</span>
-          <span class="badge fyi">FYI</span>
-        </div>
-        <div class="card-title">KPI workshop — June 4 session confirmed</div>
-        <div class="card-desc">Molly and Melissa have a loose agenda: KPI review, mapping exercise, industry benchmarks, next steps. Erinn will be on AL. You co-created the KPI deck and questionnaire — be ready to contribute on Thursday.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C08UP4H0Q65/p1780307949058919" target="_blank">Slack &#8599;</a>
-      </div>
+
     </div>
   </div>
 
-  <!-- HIGHLIGHTS -->
-  <div id="tab-highlights" class="tab-pane">
-    <div class="section-label">Active channels — past 7 days</div>
+  <!-- ── HIGHLIGHTS ── -->
+  <div class="tab-content" id="tab-highlights">
+    <div class="section-header">
+      <h2>Highlights</h2>
+      <p>Notable wins, updates, and positive moments this week</p>
+    </div>
     <div class="card-grid">
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#red-interactive-launch-2026</span>
+          <div class="dot blue"></div>
+          <span class="channel-tag">DM · Alex Wedderburn</span>
+        </div>
+        <div class="card-title">RFP shortlisted to final 2</div>
+        <div class="card-desc">Alex's deal is down to the final two. Meeting with Louise (Gordon's boss) at 12 today to present the Hootsuite pitch. Alex credited you as one of the most important people on the account — "the reassurance you bring is powerful." Crunch time.</div>
+        <div class="card-footer">
           <span class="badge fyi">FYI</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/D03KDPH5938/p1780558648971029" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Inbox session confirmed; Genesys debate; X issue open</div>
-        <div class="card-desc">
-          &#8226; Inbox requirements session confirmed for next Monday<br>
-          &#8226; Stuart asked about a Genesys CRM API integration; you pushed back strongly — Peter Wood noted Genesys social tools are weak and HS integration could be a stickiness play<br>
-          &#8226; X connection issue still unresolved; Myriam following up with Axel on last-minute training slot
-        </div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C0A747GTSRH" target="_blank">Slack &#8599;</a>
       </div>
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#superstruct-entertainment-launch-2026</span>
+          <div class="dot blue"></div>
+          <span class="channel-tag">#allen-overy-</span>
+        </div>
+        <div class="card-title">AOS project in good shape — Kantata sorted, AI restrictions clear</div>
+        <div class="card-desc">Myriam shared a full post-Charlotte-call summary (May 29). Key items resolved this week: you got Kantata access sorted, AI usage restrictions confirmed (no OwlyGPT/generative AI features for AOS), and UTM tracking is starting earlier than planned. Good coordination across the team.</div>
+        <div class="card-footer">
           <span class="badge fyi">FYI</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C070F768LN7/p1780073985498629" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Post-handover; SFTP confusion on return from AL</div>
-        <div class="card-desc">
-          &#8226; Myriam's final project wrap-up shared May 29 — your pending items: UTM params/social link tracking/GA4 data, plus Superstruct handover in progress<br>
-          &#8226; On return today you identified SFTP vs Analytics API confusion re Xavier's query<br>
-          &#8226; Myriam thanked the team warmly — positive close on her first project
-        </div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C0ABHL20ZEW" target="_blank">Slack &#8599;</a>
       </div>
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#uipath-launch-26</span>
+          <div class="dot blue"></div>
+          <span class="channel-tag">#red-interactive-launch-2026</span>
+        </div>
+        <div class="card-title">Red Interactive re-engaging after slow start</div>
+        <div class="card-desc">Myriam's note: "They've finally decided to wake up." Inbox requirements session confirmed for next Monday. Training being rescheduled. You handled Genesys integration question on return from AL on June 3, advising against building a competing-platform integration.</div>
+        <div class="card-footer">
           <span class="badge fyi">FYI</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C0A747GTSRH/p1780499565725129" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Dashboard delivery + TAM hours running low</div>
-        <div class="card-desc">
-          &#8226; Expert TAM hours nearly depleted — Molly has 4.25 accounted for; Amplify dashboard ask from Raluca is a new addition<br>
-          &#8226; Reddit dashboard task for Sergio to configure in TW (just back from holiday)<br>
-          &#8226; Sync rescheduled to June 4 due to bank holiday; source filter demo for Raluca planned for Thursday
-        </div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C0A3K55FEJC" target="_blank">Slack &#8599;</a>
       </div>
+
       <div class="card">
         <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#allen-overy-</span>
+          <div class="dot blue"></div>
+          <span class="channel-tag">#national-grid-launch-2026</span>
+        </div>
+        <div class="card-title">National Grid June 10 session aligned</div>
+        <div class="card-desc">Myriam flagged 3 items from AA training: auto-tagger setup (they want min 2 tags/post), ROI calculation customisation, and GA4 aggregate index score. You responded promptly on June 3 — all to be covered in the June 10 session. Clean handoff.</div>
+        <div class="card-footer">
           <span class="badge fyi">FYI</span>
+          <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C0A9TMRLL1G/p1780499565725129" target="_blank">Slack ↗</a>
         </div>
-        <div class="card-title">Post-audit call; European onboarding scoped</div>
-        <div class="card-desc">
-          &#8226; Monthly hours report due next week — add May (and April) hours to spreadsheet<br>
-          &#8226; European onboarding: ~60 users, 11 channels, approx. 2 approval levels — Hootsuite to share onboarding questionnaire<br>
-          &#8226; Inbox deep-dive (rules, groups, automation) flagged by Charlotte — not urgent, to scope later<br>
-          &#8226; UTM tracking can begin earlier than planned; TW Q&amp;A session week of June 15
-        </div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C070F768LN7" target="_blank">Slack &#8599;</a>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#bat-project-team</span>
-          <span class="badge fyi">FYI</span>
-        </div>
-        <div class="card-title">KPI workshop shaping up for June 4</div>
-        <div class="card-desc">
-          &#8226; Nayab confirmed June 4 slot; Erinn on AL<br>
-          &#8226; Workshop agenda: current KPI review → mapping exercise → benchmarks → next steps<br>
-          &#8226; You and Molly co-created the KPI deck and questionnaire — active contributor expected Thursday
-        </div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C08UP4H0Q65" target="_blank">Slack &#8599;</a>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#tam-ps-team</span>
-          <span class="badge fyi">FYI</span>
-        </div>
-        <div class="card-title">AI showcase call + new TW diagnostic tools</div>
-        <div class="card-desc">
-          &#8226; Lisa requesting AI use case stories for Global PS meeting on Tuesday — volunteers needed<br>
-          &#8226; New TW diagnostic tools launched (source panels, topic IDs, batch channels, complexity overview)<br>
-          &#8226; TW vs HS Analytics comparison matrix being built — good reference for your accounts
-        </div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C05FPRMUF8S" target="_blank">Slack &#8599;</a>
-      </div>
+
     </div>
   </div>
 
-  <!-- SAVED -->
-  <div id="tab-saved" class="tab-pane">
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">DM — Jordan Nagel</span>
-          <span class="badge fyi">FYI</span>
+  <!-- ── SAVED THREADS ── -->
+  <div class="tab-content" id="tab-saved">
+    <div class="section-header">
+      <h2>Saved for Later</h2>
+      <p>10 saved items found. Most recent saved: May 20, 2026.</p>
+    </div>
+    <div class="saved-list">
+
+      <div class="saved-item">
+        <div class="saved-item-body">
+          <div class="saved-item-title">#who-owns-it — White &amp; Case: who added Simon Stuttaford (simon.stuttaford@whitecase.com)?</div>
+          <div class="saved-item-meta">Saved May 20, 2026 · 23+ replies in thread · You asked if it's possible to trace who added a social profile when Social Archive isn't set up</div>
         </div>
-        <div class="card-title">TW geolocation logic — how results are located on world map</div>
-        <div class="card-desc">Jordan explained TW's 3-tier location logic: (1) GPS-precise if available, (2) country capital if partial clue (TLD, bio), (3) language-based capital for unlocatable posts (English → Washington DC, Spanish → Madrid, French → Paris). Key context for client map widget questions.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/D0A84HXD97A/p1779438199044649" target="_blank">Slack &#8599;</a>
+        <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C1WG06Q6S/p1779180731290779" target="_blank">Slack ↗</a>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#customer-proserv-global</span>
-          <span class="badge fyi">FYI</span>
+
+      <div class="saved-item">
+        <div class="saved-item-body">
+          <div class="saved-item-title">#customer-proserv-global — Auto-archiving Amplify content after X months</div>
+          <div class="saved-item-meta">Saved May 19, 2026 · You asked if anyone has customers requesting auto-archive after X months and what was suggested</div>
         </div>
-        <div class="card-title">LLM Insights demo deck + recording</div>
-        <div class="card-desc">Karen Vazquez shared a comprehensive LLM Insights slide deck (with talk track) covering: what it is, access, dashboard walkthrough, topic setup, and why it matters. Good for upcoming training sessions or demos.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C07GHNRP7UH/p1777885204497739" target="_blank">Slack &#8599;</a>
+        <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C07GHNRP7UH/p1779181421199999" target="_blank">Slack ↗</a>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#customer-proserv-global</span>
-          <span class="badge fyi">FYI</span>
+
+      <div class="saved-item">
+        <div class="saved-item-body">
+          <div class="saved-item-title">#answers-analytics — Historic data retrieval for departing customer</div>
+          <div class="saved-item-meta">Saved May 7, 2026 · A customer leaving wants to retrieve historic data — you asked Livia if this is possible</div>
         </div>
-        <div class="card-title">New TW diagnostic tools + Brazos walkthrough</div>
-        <div class="card-desc">Jacob Foshee announced new TW diagnostic tools: source panels, author/source IDs, batch channel additions, complexity overviews. Brazos Bell created a walkthrough video. Saved for reference during TW implementations.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C07GHNRP7UH/p1778817608434699" target="_blank">Slack &#8599;</a>
+        <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C04LGRR22KU/p1778189411868839" target="_blank">Slack ↗</a>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="dot" style="background:var(--c-blue)"></div>
-          <span class="channel-name">#customer-proserv-global</span>
-          <span class="badge fyi">FYI</span>
+
+      <div class="saved-item">
+        <div class="saved-item-body">
+          <div class="saved-item-title">#security-help — Session idle timeout for Hootsuite (15 min request)</div>
+          <div class="saved-item-meta">Saved May 6, 2026 · 3 replies · Asked about current session timeout duration and whether it can be configured to 15 minutes</div>
         </div>
-        <div class="card-title">Requirements Session Overview — revised script + video</div>
-        <div class="card-desc">Updated Requirements Session Overview video (more concise) + new full agenda and talk track document for RRS. Saved for onboarding reference.</div>
-        <a class="card-link" href="https://hootsuite.enterprise.slack.com/archives/C07GHNRP7UH/p1777518074645919" target="_blank">Slack &#8599;</a>
+        <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C01ERDYTHCH/p1778081537899119" target="_blank">Slack ↗</a>
       </div>
+
+      <div class="saved-item">
+        <div class="saved-item-body">
+          <div class="saved-item-title">#tam-ps-team — TW topic/filter QA process with customers</div>
+          <div class="saved-item-meta">Saved May 6, 2026 · You asked the team about the process for ensuring customer satisfaction after setting up TW topics and filters</div>
+        </div>
+        <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C05FPRMUF8S/p1778070429415069" target="_blank">Slack ↗</a>
+      </div>
+
+      <div class="saved-item">
+        <div class="saved-item-body">
+          <div class="saved-item-title">#tam-ps-team — Kantata: which project for launch vs expert services?</div>
+          <div class="saved-item-meta">Saved Apr 29, 2026 · 10 replies · You asked about which Kantata project to use for each activity type when sold on old SKUs</div>
+        </div>
+        <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C05FPRMUF8S/p1777479478326609" target="_blank">Slack ↗</a>
+      </div>
+
+      <div class="saved-item">
+        <div class="saved-item-body">
+          <div class="saved-item-title">#answers-publishing — EY publishing question (&gt;£1m ARR)</div>
+          <div class="saved-item-meta">Saved Apr 27, 2026 · You escalated an EY publishing question to Marco, Nadia, Helena — tagged Stu and Alex for visibility</div>
+        </div>
+        <a class="slack-link" href="https://hootsuite.enterprise.slack.com/archives/C05KP981H9T/p1777298566616759" target="_blank">Slack ↗</a>
+      </div>
+
     </div>
   </div>
 
-  <!-- BUZZ -->
-  <div id="tab-buzz" class="tab-pane">
+  <!-- ── BUZZ TOPICS ── -->
+  <div class="tab-content" id="tab-buzz">
+    <div class="section-header">
+      <h2>Buzz Topics &amp; Themes</h2>
+      <p>Top recurring themes across your active channels this week</p>
+    </div>
     <div class="buzz-list">
+
       <div class="buzz-item">
-        <div class="buzz-topic">&#128202; Facebook / Meta metrics deprecation — June 15 deadline</div>
-        <div class="buzz-desc">The week's dominant topic. Meta is deprecating a large set of reach metrics on June 15. Three separate product announcements this week (Analytics, Listening, and now also the Amplify angle). New "Unique Views" replacements shipped. Multiple channels discussing client messaging, SSOT updates, and analyst impact.</div>
+        <div class="buzz-rank">1</div>
+        <div class="buzz-body">
+          <div class="buzz-title">EY platform reliability crisis during critical reporting week</div>
+          <div class="buzz-desc">Two simultaneous platform failures — TW not capturing owned LinkedIn mentions and HS Planner filtering bug — hit EY during their most important reporting period of the year. The account team scrambled to cover while Siddu was on leave. Tickets escalated but response has been slow. LinkedIn API compliance behaviour confirmed as a partial explanation but doesn't resolve the core issue.</div>
+          <div class="buzz-channels">
+            <span class="channel-tag">#ey-account-team</span>
+          </div>
+        </div>
       </div>
+
       <div class="buzz-item">
-        <div class="buzz-topic">&#129302; AI in workflows — Claude, TW diagnostics, LLM Insights</div>
-        <div class="buzz-desc">Strong and growing theme. Lizzie's team used Claude to build a TW vs HS comparison doc; Matt Anderson proposed a MASTER intake doc + Claude validation workflow; Lisa is collecting AI use case stories for Tuesday's global PS meeting; LLM Insights materials shared for broader demos.</div>
+        <div class="buzz-rank">2</div>
+        <div class="buzz-body">
+          <div class="buzz-title">Advocacy &amp; Amplify permissions complexity in enterprise sales</div>
+          <div class="buzz-desc">A live RFP deal (shortlisted to final 2) hinges on whether Hootsuite can support advocacy users who can draft content but not publish directly. Two competing approaches being evaluated: content library/templates vs. adding users with approval workflows. This is a recurring friction point across enterprise pitches.</div>
+          <div class="buzz-channels">
+            <span class="channel-tag">DM · Alex Wedderburn</span>
+          </div>
+        </div>
       </div>
+
       <div class="buzz-item">
-        <div class="buzz-topic">&#128268; Analytics API vs SFTP — legacy positioning confusion</div>
-        <div class="buzz-desc">Surfaced in Superstruct on your return: customers (and some internal teams) still conflating SFTP AA data export with the Analytics API. An internal FAQ or positioning note could prevent this recurring across accounts.</div>
+        <div class="buzz-rank">3</div>
+        <div class="buzz-body">
+          <div class="buzz-title">Expert TAM hours tracking &amp; Kantata project accuracy</div>
+          <div class="buzz-desc">Multiple accounts this week surfaced questions around hours tracking, billing categories, and Kantata project setup. Siddu and Myriam worked through AOS hours (24 pre-existing vs. 72 Expert Services). UiPath confirmed at 4.25 hours remaining. Siddu also lost access to a TW demo project (suspected cleanup) and asked the team about it.</div>
+          <div class="buzz-channels">
+            <span class="channel-tag">#allen-overy-</span>
+            <span class="channel-tag">#uipath-launch-26</span>
+            <span class="channel-tag">#tam-ps-team</span>
+          </div>
+        </div>
       </div>
+
       <div class="buzz-item">
-        <div class="buzz-topic">&#8987; Expert TAM hours &amp; scope creep</div>
-        <div class="buzz-desc">Two accounts flagged pressure this week. UiPath has ~4.25 TAM hours left with a new Amplify dashboard ask in scope. Superstruct had last-minute demands during your AL, requiring Audrey G to cover. Hours management is a recurring theme.</div>
+        <div class="buzz-rank">4</div>
+        <div class="buzz-body">
+          <div class="buzz-title">AI restrictions for legal &amp; compliance-sensitive clients</div>
+          <div class="buzz-desc">Allen Overy Shearman (AOS) has explicit restrictions — no OwlyGPT, no AI-generated content features, no meeting recording. Robert Mumby clarified this week that internal Claude use for prep work is OK, but platform generative AI is off-limits. This is a growing pattern with law firm clients and worth knowing for future AOS-like onboardings.</div>
+          <div class="buzz-channels">
+            <span class="channel-tag">#allen-overy-</span>
+          </div>
+        </div>
       </div>
+
       <div class="buzz-item">
-        <div class="buzz-topic">&#128640; TQL / Suite launch — dev complete target June 10</div>
-        <div class="buzz-desc">In #billing-team, TQL is tied to the Suite launch. Dev expected complete June 10 with reactivation bugs being fixed. Monitor for any timeline changes or client-facing impacts.</div>
+        <div class="buzz-rank">5</div>
+        <div class="buzz-body">
+          <div class="buzz-title">Gainsight renewal automations causing customer confusion</div>
+          <div class="buzz-desc">Alex flagged that Gainsight's automated renewal outreach is going to unrelated team members at scale — same thing happened at Nestlé last week. EY Canada's renewal email went to 10+ unrelated individuals. Doing more harm than good for the account relationship. Worth escalating to the Gainsight admin or RevOps team.</div>
+          <div class="buzz-channels">
+            <span class="channel-tag">#ey-account-team</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── RELEASES ── -->
+  <div class="tab-content" id="tab-releases">
+    <div class="section-header">
+      <h2>Product Releases</h2>
+      <p>#corp-product-announcements — past 7 days</p>
+    </div>
+    <div class="release-notice">
+      ⚠️ <strong>#corp-product-announcements has been inactive since June 23, 2025.</strong> Announcements appear to have moved to the Workplace channel: <em>Product Announcements and Roadmap</em>. Nothing to flag in the past 7 days.<br><br>
+      Most recent announcements from the channel are archived below for reference.
+    </div>
+
+    <div class="release-archive">
+      <h3>Archive — Last known announcements (June 2025)</h3>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="card-header"><div class="dot blue"></div><span class="channel-tag">#corp-product-announcements</span></div>
+          <div class="card-title">Blue Silk™ AI model upgrade — 12x data processing</div>
+          <div class="card-desc">Major AI framework upgrade delivering 12x greater data processing, dramatically reduced latency, custom output formatting (lists, bullet points, markdown), and enhanced LLM accuracy. GA June 12, 2025.</div>
+          <div class="card-footer"><span class="badge done">GA · Jun 2025</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="dot blue"></div><span class="channel-tag">#corp-product-announcements</span></div>
+          <div class="card-title">OwlyGPT Beta — agentic AI for social media managers</div>
+          <div class="card-desc">First agentic AI solution for SMMs. Uses real-time social listening (Blue Silk), Brand Voice feature, post/campaign ideation, history log, Composer integration. Beta for Sales Enabled + eComm customers from June 3, 2025.</div>
+          <div class="card-footer"><span class="badge done">Beta · Jun 2025</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="dot blue"></div><span class="channel-tag">#corp-product-announcements</span></div>
+          <div class="card-title">LinkedIn ad comments in Inbox 2.0</div>
+          <div class="card-desc">LinkedIn ad (dark post) comments now show in Inbox queue. Consistent with existing FB and IG dark post comment support. Minor release, GA May 28, 2025.</div>
+          <div class="card-footer"><span class="badge done">GA · May 2025</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="dot blue"></div><span class="channel-tag">#corp-product-announcements</span></div>
+          <div class="card-title">Custom Inboxes now shareable</div>
+          <div class="card-desc">Users can create custom inbox views and share with teammates. Admins can view all shared inboxes, change ownership, and disable sharing org-wide. Minor GA May 28, 2025.</div>
+          <div class="card-footer"><span class="badge done">GA · May 2025</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="dot blue"></div><span class="channel-tag">#corp-product-announcements</span></div>
+          <div class="card-title">LATM access moving to Hootsupport only</div>
+          <div class="card-desc">LATM (Login As The Member) will no longer be in Admin Tools. Moving to Hootsupport only to reduce duplication. Change effective end of June 13, 2025 week.</div>
+          <div class="card-footer"><span class="badge done">Change · Jun 2025</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="dot blue"></div><span class="channel-tag">#corp-product-announcements</span></div>
+          <div class="card-title">Predefined Scores — Reach, Engagement Rate, EMV</div>
+          <div class="card-desc">New predefined scores across HS Listening and TW Standalone: Estimated Reach, Engagement Rate, and Earned Media Value. Available in Results widgets, Custom exports, Sort By. Major GA June 17, 2025.</div>
+          <div class="card-footer"><span class="badge done">GA · Jun 2025</span></div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- RELEASES -->
-  <div id="tab-releases" class="tab-pane">
-    <div class="release-item">
-      <div class="release-header">
-        <span class="release-tag">GA &#183; Minor</span>
-        <span class="release-date">June 3, 2026</span>
-      </div>
-      <div class="release-title">&#128202; Analytics: Facebook Reach Metrics Deprecated — Unique Views Replacements Live</div>
-      <div class="release-desc">
-        Meta deprecated several Facebook reach metrics effective <strong>June 15, 2026</strong>. Hootsuite has shipped <strong>Page and Post Unique Views</strong> metrics as cross-platform replacements (Facebook + Instagram parity). Affects Analytics, Advanced Analytics, and Amplify Analytics.<br><br>
-        &#8226; Customers should keep old metrics in existing reports for historical continuity; use new metrics going forward<br>
-        &#8226; Pendo comms live; Help Center article updated; reactive messaging available for TAMs<br>
-        &#8226; <a href="https://docs.google.com/document/d/15h4L-g0E1kCGnIeHVVGdfn5rRvfsllR61NyPprvpesg/edit?tab=t.0" target="_blank">Tech Brief &#8599;</a> &#183; <a href="https://help.hootsuite.com/s/article/fb-metrics-analytics-deprecation?language=en_US" target="_blank">Help Article &#8599;</a>
-      </div>
+  <!-- ── NEW CHANNELS ── -->
+  <div class="tab-content" id="tab-new-channels">
+    <div class="section-header">
+      <h2>New Channels</h2>
+      <p>Channels you were added to in the past 7 days</p>
     </div>
-    <div class="release-item">
-      <div class="release-header">
-        <span class="release-tag">GA &#183; Minor</span>
-        <span class="release-date">June 2, 2026</span>
-      </div>
-      <div class="release-title">&#129525; Threads: Alt Text Support for Image Posts in Organic Composer</div>
-      <div class="release-desc">
-        Customers can now add <strong>alt text to images in Threads single-image and multi-image posts</strong>. AI-generated alt text also available. Closes competitive parity gap — all major competitors already offered this.<br><br>
-        &#8226; Legally mandated for some customers (government, healthcare)<br>
-        &#8226; Must open alt text modal (hover image thumbnail), add text or AI-generate it, then save<br>
-        &#8226; <a href="https://docs.google.com/document/d/1OiOPCGO43YuMWL7QfoRn8-VqSsNQHQsSiWXTyqolpHU/edit?tab=t.0" target="_blank">Tech Brief &#8599;</a>
-      </div>
-    </div>
-    <div class="release-item">
-      <div class="release-header">
-        <span class="release-tag" style="background:var(--c-red-bg);color:var(--c-red-text);">Deprecation</span>
-        <span class="release-date">June 1, 2026</span>
-      </div>
-      <div class="release-title">&#129760; Listening / TW: Facebook Insights Metrics Deprecation Wave 2</div>
-      <div class="release-desc">
-        Second wave of Meta's Page Insights consolidation (first wave: Nov 2025). Facebook Page Insights metrics deprecated June 15 — impacts <strong>Hootsuite Listening and TW Standalone</strong>. Requires restructuring of Facebook Insights monitoring screens and Channel Performance / IQ App screens.<br><br>
-        &#8226; Goals: maintain data continuity, align terminology, ensure metric accuracy<br>
-        &#8226; Universal change — all Facebook API consumers must adapt<br>
-        &#8226; <a href="https://docs.google.com/document/d/1O0SlLWYkO6YRnVKsOyTBSvtv8mt9aSadZV_ipostaq0/edit?usp=sharing" target="_blank">Tech Brief &#8599;</a>
-      </div>
+    <div class="empty-state">
+      <div class="icon">📭</div>
+      <div>Nothing to flag today.</div>
+      <div style="margin-top:4px;color:#bbb;font-size:11px;">No new channel joins detected in the past 7 days.</div>
     </div>
   </div>
 
-  <!-- NEW CHANNELS -->
-  <div id="tab-new-channels" class="tab-pane">
-    <div class="empty-state">Nothing to flag today — no newly joined channels detected in the past 7 days.</div>
-  </div>
-
-  <!-- TODO -->
-  <div id="tab-todo" class="tab-pane">
-    <div class="warn-banner">&#9888;&#65039; Obsidian vault could not be accessed during this automated run (iCloud not synced in the sandbox). Items below are derived from Slack activity. Click any item to dismiss it; use "Clear done" to remove completed rows.</div>
-
-    <div class="todo-group" id="group-starred-fresh">
-      <div class="todo-group-header">
-        <span class="todo-group-title">&#11088; Starred &middot; Open &le; 5 days</span>
-        <span class="todo-count" id="count-starred-fresh">3</span>
-        <button class="todo-clear-btn" onclick="clearDone('group-starred-fresh')">Clear done</button>
-      </div>
-      <div class="todo-items" id="items-starred-fresh">
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">&#11088; Reply to Xavier (Superstruct) re: SFTP vs Analytics API — committed today</span>
-          <span class="todo-age age-overdue">Today</span>
-        </div>
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">&#11088; Confirm UiPath sync attendance (June 4, 2:30pm) + check TAM hours remaining</span>
-          <span class="todo-age age-fresh">Today</span>
-        </div>
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">&#11088; Log May hours to Allen &amp; Overy hours spreadsheet</span>
-          <span class="todo-age age-overdue">5d</span>
-        </div>
-      </div>
+  <!-- ── TO-DO ── -->
+  <div class="tab-content" id="tab-todo">
+    <div class="section-header">
+      <h2>To-Do</h2>
+      <p>Outstanding tasks from your Obsidian Daily Notes</p>
     </div>
-
-    <div class="todo-group" id="group-unstarred-fresh">
-      <div class="todo-group-header">
-        <span class="todo-group-title">Unstarred &middot; Open &le; 5 days</span>
-        <span class="todo-count" id="count-unstarred-fresh">4</span>
-        <button class="todo-clear-btn" onclick="clearDone('group-unstarred-fresh')">Clear done</button>
-      </div>
-      <div class="todo-items" id="items-unstarred-fresh">
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">Prepare for BAT KPI workshop (June 4) — review updated deck from Molly</span>
-          <span class="todo-age age-fresh">2d</span>
-        </div>
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">Reply to Olivia Goldsmith (#answers-analytics) — video views + carousel question</span>
-          <span class="todo-age age-overdue">5d</span>
-        </div>
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">Review AOS tags document from Charlotte — flag any clarifications needed</span>
-          <span class="todo-age age-overdue">5d</span>
-        </div>
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">Share UTM parameters, social link tracking standards and GA4 data with Superstruct team</span>
-          <span class="todo-age age-overdue">5d</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="todo-group" id="group-starred-old">
-      <div class="todo-group-header">
-        <span class="todo-group-title">&#11088; Starred &middot; Open &gt; 5 days</span>
-        <span class="todo-count" id="count-starred-old">1</span>
-        <button class="todo-clear-btn" onclick="clearDone('group-starred-old')">Clear done</button>
-      </div>
-      <div class="todo-items" id="items-starred-old">
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">&#11088; Build European onboarding questionnaire for Allen &amp; Overy</span>
-          <span class="todo-age age-old">13d</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="todo-group" id="group-unstarred-old">
-      <div class="todo-group-header">
-        <span class="todo-group-title">Unstarred &middot; Open &gt; 5 days</span>
-        <span class="todo-count" id="count-unstarred-old">2</span>
-        <button class="todo-clear-btn" onclick="clearDone('group-unstarred-old')">Clear done</button>
-      </div>
-      <div class="todo-items" id="items-unstarred-old">
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">Investigate Inbox 2.0 real-time alert workaround for National Grid (with Robert Mumby)</span>
-          <span class="todo-age age-old">13d</span>
-        </div>
-        <div class="todo-item" onclick="toggleDone(this)">
-          <span class="todo-text">Share AOS audit doc + raw data with Myriam; include tag-less posts breakdown by channel</span>
-          <span class="todo-age age-old">13d</span>
-        </div>
-      </div>
+    <div class="todo-notice">
+      ⚠️ <strong>Obsidian vault not connected this session.</strong><br><br>
+      The Daily Tasks and Personal To-Do files are stored at:<br>
+      <code>/Users/siddharth.amin/Library/Mobile Documents/iCloud~md~obsidian/Documents/Siddu Work/Daily Notes/</code><br><br>
+      This path isn't mounted in the current automated session. To see your to-do list in the next run, open Cowork interactively and approve vault access when prompted — or open the file directly in Obsidian.<br><br>
+      <strong>Quick reminders from Slack context this week:</strong><br>
+      • Share UTM parameters + GA4 metrics with Superstruct (graduation pending)<br>
+      • Add hours to AOS spreadsheet for May (Kantata sorted, but report due next week)<br>
+      • Share audit doc + raw data with Myriam for AOS<br>
+      • Share breakdown of posts without tags by Global / US / UK channels (AOS)<br>
+      • Follow up on who added Simon Stuttaford to White &amp; Case (#who-owns-it saved thread)
     </div>
   </div>
 
-</div>
+</div><!-- /wrapper -->
 
 <script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// Date range
 (function() {
-  var now = new Date();
-  var opts = { month: 'short', day: 'numeric' };
-  var end = now.toLocaleDateString('en-GB', opts);
-  var start = new Date(now); start.setDate(start.getDate() - 6);
-  var startStr = start.toLocaleDateString('en-GB', opts);
-  document.getElementById('date-range').textContent = startStr + ' – ' + end;
-  document.getElementById('refresh-time').textContent = 'Refreshed ' + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + ' ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  const now = new Date();
+  const fmt = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const start = new Date(now); start.setDate(now.getDate() - 6);
+  document.getElementById('date-range').textContent = fmt(start) + ' – ' + fmt(now);
+  const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  const dateStr = fmt(now);
+  document.getElementById('refreshed-time').textContent = 'Refreshed ' + dateStr + ' · ' + timeStr;
 })();
-
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-  document.getElementById('tab-' + name).classList.add('active');
-  btn.classList.add('active');
-}
-
-var DONE_KEY = 'slack_summary_done_2026_06_03';
-var doneItems;
-try { doneItems = new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]')); } catch(e) { doneItems = new Set(); }
-
-function getItemKey(el) { return el.querySelector('.todo-text').textContent.trim().substring(0, 60); }
-
-function toggleDone(el) {
-  var key = getItemKey(el);
-  if (el.classList.contains('done')) {
-    el.classList.remove('done'); doneItems.delete(key);
-  } else {
-    el.classList.add('done'); doneItems.add(key);
-  }
-  try { localStorage.setItem(DONE_KEY, JSON.stringify(Array.from(doneItems))); } catch(e) {}
-}
-
-function clearDone(groupId) {
-  var group = document.getElementById(groupId);
-  group.querySelectorAll('.todo-item.done').forEach(function(el) {
-    doneItems.delete(getItemKey(el)); el.remove();
-  });
-  try { localStorage.setItem(DONE_KEY, JSON.stringify(Array.from(doneItems))); } catch(e) {}
-  updateCounts();
-}
-
-function updateCounts() {
-  ['starred-fresh','unstarred-fresh','starred-old','unstarred-old'].forEach(function(id) {
-    var items = document.getElementById('items-' + id);
-    var countEl = document.getElementById('count-' + id);
-    if (items && countEl) countEl.textContent = items.querySelectorAll('.todo-item').length;
-  });
-}
-
-document.querySelectorAll('.todo-item').forEach(function(el) {
-  if (doneItems.has(getItemKey(el))) el.classList.add('done');
-});
 </script>
+
 </body>
 </html>
